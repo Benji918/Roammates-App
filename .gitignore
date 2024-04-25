@@ -9,7 +9,7 @@ __pycache__/
 misc.xml
 modules.xml
 core/migrations/
-
+db.sqlite3
 
 # Distribution / packaging
 .Python
