@@ -41,6 +41,10 @@ INSTALLED_APPS = [
     'rest_framework_simplejwt',
     'djoser',
     'drf_spectacular',
+
+    # local apps
+    'core',
+    'users',
 ]
 
 MIDDLEWARE = [
@@ -149,6 +153,8 @@ SIMPLE_JWT = {
     "ACCESS_TOKEN_LIFETIME": timedelta(days=1),
     "REFRESH_TOKEN_LIFETIME": timedelta(days=2),
 }
+
+AUTH_USER_MODEL = 'core.CustomUser'
 
 # API Docs settings
 SPECTACULAR_SETTINGS = {
