@@ -7,5 +7,12 @@ class AdsSerializer(serializers.ModelSerializer):
         model = Ad
         fields = ['id', 'no_rooms_for_rent', 'size_of_property', 'address_of_property',
                   'area_of_property', 'room_amenities', 'cost_of_room', 'length_of_availability',
-                  'phone_number', 'ad_type', 'ad_image']
+                  'phone_number', 'ad_type']
+        read_only_fields = ['id', 'created_at', 'updated_at']
+
+
+class AdImageSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Ad
+        fields = ['id', 'ad_image',]
         read_only_fields = ['id', 'created_at', 'updated_at']
