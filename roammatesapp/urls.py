@@ -24,6 +24,7 @@ from drf_spectacular.views import (
 from django.conf.urls.static import static
 from roammatesapp import settings
 
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/schema/', SpectacularAPIView.as_view(), name='schema'),

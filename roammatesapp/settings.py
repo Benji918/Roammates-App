@@ -60,6 +60,7 @@ MIDDLEWARE = [
 
     # custom
     "corsheaders.middleware.CorsMiddleware",
+    # 'django_sonar.middlewares.requests.RequestsMiddleware',
 ]
 
 ROOT_URLCONF = 'roammatesapp.urls'
@@ -138,22 +139,9 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # Other settings
 # DJOSER SETTINGS
 DJOSER = {
-    "LOGIN_FIELD": "email",
-    "USER_CREATE_PASSWORD_RETYPE": True,
-    "USERNAME_CHANGED_EMAIL_CONFIRMATION": True,
-    "PASSWORD_CHANGED_EMAIL_CONFIRMATION": True,
-    "SEND_CONFIRMATION_EMAIL": True,
-    "SET_USERNAME_RETYPE": True,
-    "SET_PASSWORD_RETYPE": True,
-    "USERNAME_RESET_CONFIRM_URL": "password/reset/confirm/{uid}/{token}",
-    "PASSWORD_RESET_CONFIRM_URL": "email/reset/confirm/{uid}/{token}",
-    "ACTIVATION_URL": "activate/{uid}/{token}",
-    "SEND_ACTIVATION_EMAIL": True,
-
     'SERIALIZERS': {
         'user_create': 'users.serializers.UserCreateSerializer',
         'current_user': 'users.serializers.CurrentUserSerializer',
-        "user": "djoser.serializers.UserSerializer",
     }
 }
 
@@ -216,3 +204,13 @@ BASE_BACKEND_URL = "http://localhost:8000"
 EMAIL_HOST_USER = os.getenv('SENDER_EMAIL')
 EMAIL_HOST_PASSWORD = os.getenv('SENDER_EMAIL_PASSWORD')
 
+
+DJANGO_SONAR = {
+    'excludes': [
+        STATIC_URL,
+        MEDIA_URL,
+        '/sonar/',
+        '/admin/',
+        '/__reload__/',
+    ],
+}
