@@ -64,7 +64,7 @@ class Ad(models.Model):
     ]
     room_amenities = models.CharField(max_length=255, choices=ROOM_AMENITIES_CHOICES, blank=False)
     cost_of_room = models.IntegerField(blank=False)
-    length_of_availability = models.DateField(blank=False)
+    length_of_availability = models.DateField(blank=True)
     phone_number = models.BigIntegerField(blank=False)
     AD_TYPE_CHOICES = [
         ('room to rent', 'Room to Rent'),

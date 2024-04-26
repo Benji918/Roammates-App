@@ -36,6 +36,9 @@ urlpatterns = [
     path('auth/', include('djoser.urls')),
     path('jwt/', include('djoser.urls.jwt')),
 
+    # APP ENDPOINTS
+    path('ads/', include('ads.urls')),
+
 
 ]
 
