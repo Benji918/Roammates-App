@@ -1,3 +1,6 @@
+from django.http import JsonResponse
+from django.shortcuts import get_object_or_404
+from rest_framework.generics import GenericAPIView
 from django.urls import reverse
 from rest_framework import viewsets, mixins, status
 from rest_framework_simplejwt.authentication import JWTAuthentication
@@ -5,8 +8,9 @@ from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from core.models import Ad
-from .serializers import AdsSerializer
+from .serializers import AdsSerializer, AdImageSerializer
 from .permissions import IsOwnerOfAd
+from rest_framework import views
 
 
 # Create your views here
@@ -22,14 +26,14 @@ class AdViewSets(viewsets.ModelViewSet):
 
     def get_serializer_class(self):
         if self.action == 'upload_image':
-            return AdsSerializer
+            return AdImageSerializer
         return self.serializer_class
 
-    @action(methods=['POST', 'PUT', 'DELETE'], detail=True, url_path='upload-image')
+    @action(methods=['GET', 'POST', 'PUT', 'DELETE'], detail=True, url_path='upload-image')
     def upload_image(self, request, pk=None):
         """Upload image for a lodge object"""
-        lodge = self.get_object()
-        serializer = self.get_serializer(lodge, data=request.data)
+        ad = self.get_object()
+        serializer = self.get_serializer(ad, data=request.data)
 
         if serializer.is_valid():
             serializer.save()
@@ -42,13 +46,15 @@ class AdViewSets(viewsets.ModelViewSet):
                 return Response(status=status.HTTP_204_NO_CONTENT)
         return Response(serializer.data, status=status.HTTP_400_BAD_REQUEST)
 
-    @action(detail=True, url_name='sharable-link', url_path='sharable-link')
-    def get_sharable_link(self, request, pk=None):
-        """Get the sharable link for a product"""
-        ad = self.get_object()
-        sharable_link = request.build_absolute_uri(reverse('ad-detail', args=[ad.id]))
-        return Response({'sharable_link': sharable_link})
-
     def perform_create(self, serializer):
         """Create a new products for a specific authenticated user"""
         serializer.save(user=self.request.user)
+
+
+class AdsSharableView(mixins.RetrieveModelMixin, GenericAPIView):
+
+    def get(self, request, pk=None):
+        ad = get_object_or_404(Ad, id=pk)
+        sharable_link = ad.generate_sharable_link()
+        return JsonResponse({'sharable_link': sharable_link})
+
