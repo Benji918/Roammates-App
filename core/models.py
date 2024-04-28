@@ -80,4 +80,4 @@ class Ad(models.Model):
         return f"Ad {self.address_of_property}"
 
     def generate_sharable_link(self):
-        return f'/ad/{self.id}/'
+        return f'/ad/{self.id}/sharable-link/'
