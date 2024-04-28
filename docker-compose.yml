@@ -1,0 +1,25 @@
+services:
+  web:
+    image: roammatesapp
+    build: .
+    ports:
+      - 8000:8000
+    volumes:
+      - ./:app
+    command: >
+      sh -c "python manage.py migrate &&
+             python manage.py runserver 0.0.0.0:8000
+
+    depends_on:
+      - postgres-db
+
+  postgres-db:
+    image: postgres:14
+    environment:
+      - POSTGRES_PASSWORD=benjamin is cool
+      - POSTGRES_USERNAME=benji
+    volumes:
+      - postgres_db_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_db_data:
