@@ -5,7 +5,8 @@ from django.contrib.auth.models import AbstractUser
 import uuid
 import os
 from django.conf import settings
-
+from phonenumber_field.modelfields import PhoneNumberField
+from .validators import validate_rooms
 
 def ad_image_file(instance, filename):
     """Generate filename for new object image"""
@@ -53,8 +54,8 @@ class Ad(models.Model):
         unique=True
     )
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    no_rooms_for_rent = models.IntegerField(blank=False)
-    size_of_property = models.CharField(max_length=255)
+    no_rooms_for_rent = models.IntegerField(blank=False, validators=[validate_rooms])
+    size_of_property = models.CharField(max_length=255, blank=False)
     address_of_property = models.CharField(max_length=255, unique=True, blank=False)
     area_of_property = models.CharField(max_length=255, blank=False)
     ROOM_AMENITIES_CHOICES = [
@@ -65,7 +66,7 @@ class Ad(models.Model):
     room_amenities = models.CharField(max_length=255, choices=ROOM_AMENITIES_CHOICES, blank=False)
     cost_of_room = models.IntegerField(blank=False)
     length_of_availability = models.DateField(blank=True)
-    phone_number = models.BigIntegerField(blank=False)
+    phone_number = PhoneNumberField(null=False, blank=False, unique=True)
     AD_TYPE_CHOICES = [
         ('room to rent', 'Room to Rent'),
         ('room wanted', 'Room Wanted'),
