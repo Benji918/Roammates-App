@@ -170,13 +170,29 @@ CSRF_TRUSTED_ORIGINS = [
     "http://localhost:8000",
 ]
 
-
 # REST FRAMEWORK SETTINGS
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ),
     'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',  # drf-spectacular settings
+
+    # API rate limiting
+    'DEFAULT_THROTTLE_CLASSES': [
+
+        'rest_framework.throttling.AnonRateThrottle',
+
+        'rest_framework.throttling.UserRateThrottle'
+
+    ],
+
+    'DEFAULT_THROTTLE_RATES': {
+
+        'anon': '2/min',
+
+        'user': '4/min'
+
+    }
 }
 
 SIMPLE_JWT = {
@@ -204,7 +220,6 @@ BASE_BACKEND_URL = "http://localhost:8000"
 EMAIL_HOST_USER = os.getenv('SENDER_EMAIL')
 EMAIL_HOST_PASSWORD = os.getenv('SENDER_EMAIL_PASSWORD')
 
-
 DJANGO_SONAR = {
     'excludes': [
         STATIC_URL,
@@ -214,3 +229,5 @@ DJANGO_SONAR = {
         '/__reload__/',
     ],
 }
+
+PHONENUMBER_DEFAULT_REGION = "NG"
