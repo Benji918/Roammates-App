@@ -11,4 +11,5 @@ urlpatterns = [
     path('', include(router.urls)),
     path('<uuid:pk>/sharable-link/', AdsSharableView.as_view()),
 
+
 ]
