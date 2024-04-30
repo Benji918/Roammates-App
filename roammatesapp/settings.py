@@ -188,11 +188,17 @@ REST_FRAMEWORK = {
 
     'DEFAULT_THROTTLE_RATES': {
 
-        'anon': '2/min',
+        'anon': '100/day',
 
-        'user': '4/min'
+        'user': '1000/day'
 
-    }
+    },
+
+    'DEFAULT_PARSER_CLASSES': [
+        'rest_framework.parsers.JSONParser',
+        'rest_framework.parsers.FormParser',
+        'rest_framework.parsers.MultiPartParser',  # Add this line
+    ],
 }
 
 SIMPLE_JWT = {
