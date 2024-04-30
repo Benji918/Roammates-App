@@ -8,6 +8,7 @@ from django.conf import settings
 from phonenumber_field.modelfields import PhoneNumberField
 from .validators import validate_rooms
 
+
 def ad_image_file(instance, filename):
     """Generate filename for new object image"""
     ext = os.path.splitext(filename)[1]
@@ -72,8 +73,8 @@ class Ad(models.Model):
         ('room wanted', 'Room Wanted'),
         ('whole apartment for rent', 'whole apartment for rent'),
     ]
+    image = models.ManyToManyField('AdImage', related_name='ads')
     ad_type = models.CharField(max_length=255, choices=AD_TYPE_CHOICES, blank=False)
-    ad_image = models.ImageField(upload_to=ad_image_file, null=False, blank=False)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -82,3 +83,20 @@ class Ad(models.Model):
 
     def generate_sharable_link(self):
         return f'/ad/{self.id}/sharable-link/'
+
+
+class AdImage(models.Model):
+    id = models.UUIDField(
+        primary_key=True,
+        default=uuid.uuid4,
+        editable=False,
+        unique=True
+    )
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    ad = models.ForeignKey(Ad, on_delete=models.CASCADE, related_name='images')
+    image = models.ImageField(null=False, blank=False, upload_to=ad_image_file)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return f"Image for Ad {self.id}"
