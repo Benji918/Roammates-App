@@ -2,11 +2,31 @@ from core.models import Ad, AdImage
 from rest_framework import serializers
 
 
+from django.core.exceptions import ValidationError
+
+
 class AdImageSerializer(serializers.ModelSerializer):
     class Meta:
         model = AdImage
         fields = ['id', 'image']
         read_only_fields = ['id', 'created_at', 'updated_at']
+
+    def validate(self, data):
+        # Validate the image count
+        ad = self.context['ad']  # Assuming ad is passed in the serializer context
+        if ad.images.count() >= 10:
+            raise ValidationError("An ad can only have a maximum of 10 images.")
+
+        # Validate the image file extension and size
+        image = data.get('image')
+        if image:
+            if not image.name.lower().endswith(('.jpg', '.jpeg', '.png')):
+                raise ValidationError("Only JPG, JPEG, and PNG images are allowed.")
+
+            if image.size > 1024 * 1024:  # 1MB limit
+                raise ValidationError("Image size should not exceed 1MB.")
+
+        return data
 
 
 class AdsSerializer(serializers.ModelSerializer):

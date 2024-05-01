@@ -41,16 +41,18 @@ class AdViewSets(viewsets.ModelViewSet):
     def upload_image(self, request, pk=None):
         """Upload an image to an ad"""
         ad = self.get_object()
-        serializer = AdImageSerializer(data=request.data)
+        serializer = AdImageSerializer(data=request.data, context={'ad': ad})
 
         if serializer.is_valid():
-            serializer.save(ad=ad, user=request.user)  # Pass ad and user to serializer
+            serializer.save(ad=ad, user=request.user)
+            # print(serializer.errors)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def perform_create(self, serializer):
         """Create a new products for a specific authenticated user"""
-        serializer.save(user=self.request.user)
+        ad = self.get_object()
+        serializer.save(ad=ad, user=self.request.user)
 
 
 class AdsSharableView(mixins.RetrieveModelMixin, GenericAPIView):
