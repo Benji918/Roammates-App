@@ -1,3 +1,4 @@
+from django.core.exceptions import ValidationError
 from django.utils import timezone
 from django.db import models
 from .manager import CustomUserManager
@@ -7,7 +8,7 @@ import os
 from django.conf import settings
 from phonenumber_field.modelfields import PhoneNumberField
 from .validators import validate_rooms
-
+from django.utils.translation import gettext_lazy as _
 
 def ad_image_file(instance, filename):
     """Generate filename for new object image"""
@@ -100,3 +101,14 @@ class AdImage(models.Model):
 
     def __str__(self):
         return f"Image for Ad {self.id}"
+
+    # def save(self, *args, **kwargs):
+    #     self.full_clean()  # Call full_clean to trigger validation
+    #     super().save(*args, **kwargs)  # Call save method of the parent class
+    #
+    # def clean(self):
+    #     if self.ad.image.count() >= 3:
+    #         raise ValidationError(_("An ad can only have a maximum of 10 images."))
+
+
+
