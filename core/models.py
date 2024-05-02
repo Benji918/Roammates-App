@@ -102,13 +102,7 @@ class AdImage(models.Model):
     def __str__(self):
         return f"Image for Ad {self.id}"
 
-    # def save(self, *args, **kwargs):
-    #     self.full_clean()  # Call full_clean to trigger validation
-    #     super().save(*args, **kwargs)  # Call save method of the parent class
-    #
-    # def clean(self):
-    #     if self.ad.image.count() >= 3:
-    #         raise ValidationError(_("An ad can only have a maximum of 10 images."))
+
 
 
 
