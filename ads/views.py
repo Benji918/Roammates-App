@@ -6,7 +6,7 @@ from rest_framework import viewsets, mixins, status
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework.decorators import action
 from rest_framework.response import Response
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, AllowAny
 from core.models import Ad, AdImage
 from .serializers import AdsSerializer, AdImageSerializer
 from .permissions import IsOwnerOfAd
@@ -28,9 +28,23 @@ class AdViewSets(viewsets.ModelViewSet):
             image_ids = self._params_to_ints(images)
             queryset = queryset.filter(images__id__in=image_ids)
 
+        if self.request.user.is_anonymous:
+            return queryset.order_by('-id').distinct()
+
         return queryset.filter(
             user=self.request.user
         ).order_by('-id').distinct()
+
+
+
+    def get_permissions(self):
+        """
+        Instantiates and returns the list of permissions that this view requires.
+        """
+        permission_classes = self.permission_classes
+        if self.action == 'list' or self.action == 'retrieve':
+            permission_classes = [AllowAny]
+        return [permission() for permission in permission_classes]
 
     def get_serializer_class(self):
         if self.action == 'upload_image':

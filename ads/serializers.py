@@ -13,7 +13,7 @@ class AdImageSerializer(serializers.ModelSerializer):
 
     def validate(self, data):
         # Validate the image count
-        ad = self.context['ad']  # Assuming ad is passed in the serializer context
+        ad = self.context.get('ad')  # Assuming ad is passed in the serializer context
         if ad.images.count() >= 10:
             raise ValidationError("An ad can only have a maximum of 10 images.")
 
@@ -41,7 +41,7 @@ class AdsSerializer(serializers.ModelSerializer):
 
     def _get_or_create_images(self, images, ad):
         """Helper function for getting or creating images as needed"""
-        auth_user = self.context['request'].user
+        auth_user = self.context.get('request').user
         for image in images:
             img_obj, created = AdImage.objects.get_or_create(
                 user=auth_user,
