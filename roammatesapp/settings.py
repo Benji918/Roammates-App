@@ -240,3 +240,8 @@ DJANGO_SONAR = {
 }
 
 PHONENUMBER_DEFAULT_REGION = "NG"
+
+# flutterwave settings
+FLW_SEC_KEY = os.getenv('FLW_SEC_KEY')
+FLW_PUB_KEY = os.getenv('FLW_PUB_KEY')
+
