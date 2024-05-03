@@ -124,7 +124,7 @@ class AdPayment(models.Model):
     pending_status = models.CharField(
         max_length=50, choices=PAYMENT_STATUS_CHOICES, default=PAYMENT_STATUS_PENDING)
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    ad = models.ForeignKey(Ad, on_delete=models.CASCADE, related_name='ad-payment')
+    ad = models.ForeignKey(Ad, on_delete=models.CASCADE, related_name='payment')
 
     def __str__(self):
         return f'Ad payment -> {self.pending_status}'
