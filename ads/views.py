@@ -1,5 +1,6 @@
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404
+from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.generics import GenericAPIView
 from django.urls import reverse
 from rest_framework import viewsets, mixins, status
@@ -10,7 +11,7 @@ from rest_framework.permissions import IsAuthenticated, AllowAny
 from core.models import Ad, AdImage
 from .serializers import AdsSerializer, AdImageSerializer
 from .permissions import IsOwnerOfAd
-from rest_framework import views
+from .filter import AdsFilter
 
 
 # Create your views here
@@ -19,6 +20,8 @@ class AdViewSets(viewsets.ModelViewSet):
     serializer_class = AdsSerializer
     authentication_classes = [JWTAuthentication]
     permission_classes = [IsAuthenticated, IsOwnerOfAd]
+    filter_backends = [DjangoFilterBackend]
+    filterset_class = AdsFilter
 
     def get_queryset(self):
         """Retrieve recipes for authenticated user."""
@@ -34,8 +37,6 @@ class AdViewSets(viewsets.ModelViewSet):
         return queryset.filter(
             user=self.request.user
         ).order_by('-id').distinct()
-
-
 
     def get_permissions(self):
         """
@@ -65,8 +66,7 @@ class AdViewSets(viewsets.ModelViewSet):
 
     def perform_create(self, serializer):
         """Create a new products for a specific authenticated user"""
-        ad = self.get_object()
-        serializer.save(ad=ad, user=self.request.user)
+        serializer.save(user=self.request.user)
 
 
 class AdsSharableView(mixins.RetrieveModelMixin, GenericAPIView):
