@@ -10,6 +10,7 @@ from phonenumber_field.modelfields import PhoneNumberField
 from .validators import validate_rooms
 from django.utils.translation import gettext_lazy as _
 
+
 def ad_image_file(instance, filename):
     """Generate filename for new object image"""
     ext = os.path.splitext(filename)[1]
@@ -103,6 +104,26 @@ class AdImage(models.Model):
         return f"Image for Ad {self.id}"
 
 
+class AdPayment(models.Model):
+    id = models.UUIDField(
+        primary_key=True,
+        default=uuid.uuid4,
+        editable=False,
+        unique=True
+    )
+    PAYMENT_STATUS_PENDING = 'P'
+    PAYMENT_STATUS_COMPLETE = 'C'
+    PAYMENT_STATUS_FAILED = 'F'
 
+    PAYMENT_STATUS_CHOICES = [
+        (PAYMENT_STATUS_PENDING, 'Pending'),
+        (PAYMENT_STATUS_COMPLETE, 'Complete'),
+        (PAYMENT_STATUS_FAILED, 'Failed'),
+    ]
+    placed_at = models.DateTimeField(auto_now_add=True)
+    pending_status = models.CharField(
+        max_length=50, choices=PAYMENT_STATUS_CHOICES, default=PAYMENT_STATUS_PENDING)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
 
-
+    def __str__(self):
+        return self.pending_status
