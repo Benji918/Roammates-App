@@ -56,6 +56,7 @@ class Ad(models.Model):
         editable=False,
         unique=True
     )
+    ad_name = models.CharField(max_length=255, blank=False, null=True, unique=True)
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     no_rooms_for_rent = models.IntegerField(blank=False, validators=[validate_rooms])
     size_of_property = models.CharField(max_length=255, blank=False)
@@ -76,15 +77,51 @@ class Ad(models.Model):
         ('whole apartment for rent', 'whole apartment for rent'),
     ]
     image = models.ManyToManyField('AdImage', related_name='ads')
+    AD_PAYMENT_CHOiCES = [
+        (5000, 'Duration - 7days'),
+        (10000, 'Duration - 14days'),
+        (15000, 'Duration - 30days'),
+    ]
+    ad_cost = models.IntegerField(choices=AD_PAYMENT_CHOiCES, blank=False, default=5000)
     ad_type = models.CharField(max_length=255, choices=AD_TYPE_CHOICES, blank=False)
+    ad_duration = models.IntegerField(blank=True, null=False, editable=False)
+    ad_expiration_date = models.DateTimeField(blank=True, null=False)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return f"Ad {self.address_of_property}"
+        return f"Ad {self.ad_name}"
 
     def generate_sharable_link(self):
         return f'/ad/{self.id}/sharable-link/'
+
+    def save(self, *args, **kwargs):
+        # Calculate ad_duration based on ad_cost
+        if not self.ad_duration:
+            self.ad_duration = self.calculate_ad_duration(self.ad_cost)
+
+        # Calculate ad_expiration_date based on ad_duration
+        if not self.ad_expiration_date:
+            self.ad_expiration_date = self.calculate_expiration_date()
+
+        super().save(*args, **kwargs)
+
+    @staticmethod
+    def calculate_ad_duration(ad_cost):
+        # Example logic to determine ad_duration based on payment ad_cost
+        if ad_cost == 5000:
+            return 7  # 7 days
+        elif ad_cost == 10000:
+            return 14  # 14 days
+        elif ad_cost == 15000:
+            return 30  # 30 days
+        else:
+            return 0  # Default ad_duration if ad_cost doesn't match any predefined values
+
+    def calculate_expiration_date(self):
+        if self.ad_duration:
+            return timezone.now() + timezone.timedelta(days=self.ad_duration)
+        return None
 
 
 class AdImage(models.Model):
@@ -128,4 +165,3 @@ class AdPayment(models.Model):
 
     def __str__(self):
         return f'Ad payment -> {self.pending_status}'
-

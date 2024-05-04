@@ -34,9 +34,9 @@ class AdsSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Ad
-        fields = ['id', 'no_rooms_for_rent', 'size_of_property', 'address_of_property',
+        fields = ['id', 'ad_name', 'no_rooms_for_rent', 'size_of_property', 'address_of_property',
                   'area_of_property', 'room_amenities', 'cost_of_room', 'length_of_availability',
-                  'phone_number', 'ad_type', 'images']
+                  'phone_number', 'ad_type', 'ad_cost', 'images']
         read_only_fields = ['id', 'created_at', 'updated_at']
 
     def _get_or_create_images(self, images, ad):
