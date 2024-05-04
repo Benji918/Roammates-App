@@ -56,7 +56,7 @@ class Ad(models.Model):
         editable=False,
         unique=True
     )
-    ad_name = models.CharField(max_length=255, blank=False, null=True, unique=True)
+    ad_name = models.CharField(max_length=10, blank=False, null=True, unique=True)
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     no_rooms_for_rent = models.IntegerField(blank=False, validators=[validate_rooms])
     size_of_property = models.CharField(max_length=255, blank=False)
