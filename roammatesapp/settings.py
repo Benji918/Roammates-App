@@ -43,6 +43,8 @@ INSTALLED_APPS = [
     'djoser',
     'drf_spectacular',
     "corsheaders",
+    'django_celery_beat',
+    'django_celery_results',
 
     # local apps
     'core',
@@ -245,3 +247,13 @@ PHONENUMBER_DEFAULT_REGION = "NG"
 FLW_SEC_KEY = os.getenv('FLW_SEC_KEY')
 FLW_PUB_KEY = os.getenv('FLW_PUB_KEY')
 
+# Celery settings
+CELERY_BROKER_URL = 'redis://127.0.0.1:6379'
+CELERY_ACCEPT_CONTENT = ['application/json']
+CELERY_RESULT_SERIALIZER = 'json'
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_TIMEZONE = 'Africa/Lagos'
+CELERY_RESULT_BACKEND = 'django-db'
+
+# Celery beat settings
+CELERY_BEAT_SCHEDULER = 'django_celery_beat.schedulers:DatabaseScheduler'
