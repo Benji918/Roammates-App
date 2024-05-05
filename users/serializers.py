@@ -6,10 +6,9 @@ class UserCreateSerializer(BaseUserSerializer):
     class Meta(BaseUserSerializer.Meta):
         fields = ['id', 'email', 'username', 'password']
 
-    def validate(self, value):
-        if len(value) < 5:
-            raise ValidationError('The username must be at least 5 characters long.')
-
+    # def validate(self, value):
+    #     if len(value) < 5:
+    #         raise ValidationError('The username must be at least 5 characters long.')
 
 
 class CurrentUserSerializer(UserSerializer):
