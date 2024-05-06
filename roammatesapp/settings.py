@@ -12,6 +12,12 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 import os
 from datetime import timedelta
 from pathlib import Path
+import environ
+
+env = environ.Env()
+
+# Load environment variables from a .env file if present
+environ.Env.read_env()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -228,24 +234,24 @@ SPECTACULAR_SETTINGS = {
 BASE_BACKEND_URL = "http://localhost:8000"
 
 # EMAIL SETTINGS
-EMAIL_HOST_USER = os.getenv('SENDER_EMAIL')
-EMAIL_HOST_PASSWORD = os.getenv('SENDER_EMAIL_PASSWORD')
+EMAIL_HOST_USER = env('SENDER_EMAIL')
+EMAIL_HOST_PASSWORD = env('SENDER_EMAIL_PASSWORD')
 
-DJANGO_SONAR = {
-    'excludes': [
-        STATIC_URL,
-        MEDIA_URL,
-        '/sonar/',
-        '/admin/',
-        '/__reload__/',
-    ],
-}
+# DJANGO_SONAR = {
+#     'excludes': [
+#         STATIC_URL,
+#         MEDIA_URL,
+#         '/sonar/',
+#         '/admin/',
+#         '/__reload__/',
+#     ],
+# }
 
 PHONENUMBER_DEFAULT_REGION = "NG"
 
 # flutterwave settings
-FLW_SEC_KEY = os.getenv('FLW_SEC_KEY')
-FLW_PUB_KEY = os.getenv('FLW_PUB_KEY')
+FLW_SEC_KEY = env('FLW_SEC_KEY')
+FLW_PUB_KEY = env('FLW_PUB_KEY')
 
 # Celery settings
 CELERY_BROKER_URL = 'redis://127.0.0.1:6379'
