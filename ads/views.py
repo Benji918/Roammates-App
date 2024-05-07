@@ -104,7 +104,12 @@ def initiate_payment(amount, email, ad_id):
         "customizations": {
             "title": "Pied Piper Payments",
             "logo": "http://www.piedpiper.com/app/themes/joystick-v27/images/logo.png"
+        },
+        'configurations': {
+            'session_duration': 10,  # checkout session timeout
+            'max_retry_attempt': 5,  # max payment retries
         }
+
     }
 
     try:
@@ -117,7 +122,8 @@ def initiate_payment(amount, email, ad_id):
         return Response({"error": str(err)}, status=500)
 
 
-class PaymentViewSets(mixins.RetrieveModelMixin, mixins.DestroyModelMixin, mixins.ListModelMixin, mixins.UpdateModelMixin, viewsets.GenericViewSet):
+class PaymentViewSets(mixins.RetrieveModelMixin, mixins.DestroyModelMixin, mixins.ListModelMixin,
+                      mixins.UpdateModelMixin, viewsets.GenericViewSet):
     authentication_classes = [JWTAuthentication]
     permission_classes = [IsAuthenticated, IsOwnerOfAd]
 
