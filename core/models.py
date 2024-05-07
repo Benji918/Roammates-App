@@ -50,6 +50,30 @@ class CustomUser(AbstractUser):
 
 
 class Ad(models.Model):
+    AD_PAYMENT_CHOiCES = [
+        (5000, 'Duration - 7days'),
+        (10000, 'Duration - 14days'),
+        (15000, 'Duration - 30days'),
+    ]
+    PAYMENT_STATUS_PENDING = 'P'
+    PAYMENT_STATUS_COMPLETE = 'C'
+    PAYMENT_STATUS_FAILED = 'F'
+
+    PAYMENT_STATUS_CHOICES = [
+        (PAYMENT_STATUS_PENDING, 'Pending'),
+        (PAYMENT_STATUS_COMPLETE, 'Complete'),
+        (PAYMENT_STATUS_FAILED, 'Failed'),
+    ]
+    ROOM_AMENITIES_CHOICES = [
+        ('water', 'Water'),
+        ('furniture', 'Furniture'),
+        ('light', 'Light'),
+    ]
+    AD_TYPE_CHOICES = [
+        ('room to rent', 'Room to Rent'),
+        ('room wanted', 'Room Wanted'),
+        ('whole apartment for rent', 'whole apartment for rent'),
+    ]
     id = models.UUIDField(
         primary_key=True,
         default=uuid.uuid4,
@@ -60,28 +84,16 @@ class Ad(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     no_rooms_for_rent = models.IntegerField(blank=False, validators=[validate_rooms])
     size_of_property = models.CharField(max_length=255, blank=False)
-    address_of_property = models.CharField(max_length=255, unique=True, blank=False)
+    address_of_property = models.URLField(max_length=255, unique=True, blank=False)
     area_of_property = models.CharField(max_length=255, blank=False)
-    ROOM_AMENITIES_CHOICES = [
-        ('water', 'Water'),
-        ('furniture', 'Furniture'),
-        ('light', 'Light'),
-    ]
     room_amenities = models.CharField(max_length=255, choices=ROOM_AMENITIES_CHOICES, blank=False)
     cost_of_room = models.IntegerField(blank=False)
     length_of_availability = models.DateField(blank=True)
     phone_number = PhoneNumberField(null=False, blank=False, unique=True)
-    AD_TYPE_CHOICES = [
-        ('room to rent', 'Room to Rent'),
-        ('room wanted', 'Room Wanted'),
-        ('whole apartment for rent', 'whole apartment for rent'),
-    ]
     image = models.ManyToManyField('AdImage', related_name='ads')
-    AD_PAYMENT_CHOiCES = [
-        (5000, 'Duration - 7days'),
-        (10000, 'Duration - 14days'),
-        (15000, 'Duration - 30days'),
-    ]
+    placed_at = models.DateTimeField(auto_now_add=True)
+    pending_status = models.CharField(
+        max_length=50, choices=PAYMENT_STATUS_CHOICES, default=PAYMENT_STATUS_PENDING)
     ad_cost = models.IntegerField(choices=AD_PAYMENT_CHOiCES, blank=False, default=5000)
     ad_type = models.CharField(max_length=255, choices=AD_TYPE_CHOICES, blank=False)
     ad_duration = models.IntegerField(blank=True, null=False, editable=False)
@@ -141,27 +153,3 @@ class AdImage(models.Model):
         return f"Image for Ad {self.id}"
 
 
-class AdPayment(models.Model):
-    id = models.UUIDField(
-        primary_key=True,
-        default=uuid.uuid4,
-        editable=False,
-        unique=True
-    )
-    PAYMENT_STATUS_PENDING = 'P'
-    PAYMENT_STATUS_COMPLETE = 'C'
-    PAYMENT_STATUS_FAILED = 'F'
-
-    PAYMENT_STATUS_CHOICES = [
-        (PAYMENT_STATUS_PENDING, 'Pending'),
-        (PAYMENT_STATUS_COMPLETE, 'Complete'),
-        (PAYMENT_STATUS_FAILED, 'Failed'),
-    ]
-    placed_at = models.DateTimeField(auto_now_add=True)
-    pending_status = models.CharField(
-        max_length=50, choices=PAYMENT_STATUS_CHOICES, default=PAYMENT_STATUS_PENDING)
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    ad = models.ForeignKey(Ad, on_delete=models.CASCADE, related_name='payment')
-
-    def __str__(self):
-        return f'Ad payment -> {self.pending_status}'
