@@ -1,4 +1,3 @@
-from django.core.exceptions import ValidationError
 from django.utils import timezone
 from django.db import models
 from .manager import CustomUserManager
@@ -7,7 +6,7 @@ import uuid
 import os
 from django.conf import settings
 from phonenumber_field.modelfields import PhoneNumberField
-from .validators import validate_rooms
+from .validators import validate_rooms, validate_ad_name
 from django.utils.translation import gettext_lazy as _
 
 
@@ -80,7 +79,7 @@ class Ad(models.Model):
         editable=False,
         unique=True
     )
-    ad_name = models.CharField(max_length=10, blank=False, null=True, unique=True)
+    ad_name = models.CharField(max_length=10, blank=False, null=True, unique=True, validators=[validate_ad_name])
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     no_rooms_for_rent = models.IntegerField(blank=False, validators=[validate_rooms])
     size_of_property = models.CharField(max_length=255, blank=False)
