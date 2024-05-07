@@ -67,3 +67,5 @@ class AdsSerializer(serializers.ModelSerializer):
         instance.save()
         return instance
 
+
+
