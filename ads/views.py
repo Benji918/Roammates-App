@@ -1,3 +1,4 @@
+import datetime
 import uuid
 from rest_framework.viewsets import ModelViewSet, GenericViewSet
 import requests
@@ -91,7 +92,7 @@ def initiate_payment(amount, email, ad_id):
         "tx_ref": str(uuid.uuid4()),
         "amount": str(amount),
         "currency": "NGN",
-        "redirect_url": "http:/127.0.0.1:8000/ads/payment/confirm_payment/?ad_id=" + ad_id,
+        "redirect_url": "http://localhost:8000/ads/payment/confirm_payment/?ad_id=" + ad_id,
         "meta": {
             "consumer_id": 23,
             "consumer_mac": "92a3-912ba-1192a"
@@ -154,6 +155,7 @@ class PaymentViewSets(mixins.RetrieveModelMixin, mixins.DestroyModelMixin, mixin
         print(ad_id)
         ad = Ad.objects.get(id=ad_id)
         ad.pending_status = "C"
+        ad.placed_at = datetime.datetime.now()
         ad.save()
         serializer = AdsSerializer(ad)
 
