@@ -127,6 +127,7 @@ class PaymentViewSets(mixins.RetrieveModelMixin, mixins.DestroyModelMixin, mixin
                       mixins.UpdateModelMixin, viewsets.GenericViewSet):
     authentication_classes = [JWTAuthentication]
     permission_classes = [IsAuthenticated, IsOwnerOfAd]
+    serializer_class = AdsSerializer
 
     def get_queryset(self):
         user = self.request.user
