@@ -5,7 +5,7 @@ services:
     ports:
       - 8000:8000
     volumes:
-      - ./:app
+      - ./:/app
     command: >
       sh -c "python manage.py migrate &&
              python manage.py runserver 0.0.0.0:8000"
@@ -15,11 +15,22 @@ services:
 
   postgres-db:
     image: postgres:14
-    environment:
-      - POSTGRES_PASSWORD=benjamin is cool
-      - POSTGRES_USERNAME=benji
     volumes:
       - postgres_db_data:/var/lib/postgresql/data
+
+  redis:
+    image: redis:latest
+    ports:
+      - 6379:6379
+
+  celery:
+    image: celery:latest
+    volumes:
+      - ./:/app
+    command: >
+      sh -c "celery -A roammatesapp worker -l info"
+    depends_on:
+      - redis
 
 volumes:
   postgres_db_data:

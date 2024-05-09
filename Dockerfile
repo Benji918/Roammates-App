@@ -11,6 +11,7 @@ WORKDIR /app
 
 # Install app dependencies
 COPY requirements.txt .
+RUN pip install -r requirements.txt
 
 # Set the working directory
 COPY . .
