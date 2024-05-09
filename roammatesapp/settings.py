@@ -237,15 +237,6 @@ BASE_BACKEND_URL = "http://localhost:8000"
 EMAIL_HOST_USER = env('SENDER_EMAIL')
 EMAIL_HOST_PASSWORD = env('SENDER_EMAIL_PASSWORD')
 
-# DJANGO_SONAR = {
-#     'excludes': [
-#         STATIC_URL,
-#         MEDIA_URL,
-#         '/sonar/',
-#         '/admin/',
-#         '/__reload__/',
-#     ],
-# }
 
 PHONENUMBER_DEFAULT_REGION = "NG"
 
@@ -254,7 +245,7 @@ FLW_SEC_KEY = env('FLW_SEC_KEY')
 FLW_PUB_KEY = env('FLW_PUB_KEY')
 
 # Celery settings
-CELERY_BROKER_URL = 'redis://127.0.0.1:6379'
+CELERY_BROKER_URL = 'redis://127.0.0.1:6379/0'
 CELERY_ACCEPT_CONTENT = ['application/json']
 CELERY_RESULT_SERIALIZER = 'json'
 CELERY_TASK_SERIALIZER = 'json'

@@ -8,7 +8,7 @@ from django.conf import settings
 
 @shared_task
 def send_registration_email(receiver_email, message='Thank you for registering on our site.'):
-    print("Task is being executed...")
+    print('task runiningg!!!!!')
     # Create a MIME object
     msg = MIMEMultipart()
 
@@ -16,7 +16,7 @@ def send_registration_email(receiver_email, message='Thank you for registering o
     msg.attach(MIMEText(message, "plain"))
 
     # Set the email subject, sender, and receiver
-    msg["Subject"] = 'Welcome to Roammatesapp'
+    msg["Subject"] = 'welcome to GFG world'
     msg["From"] = settings.EMAIL_HOST_USER
     print(settings.EMAIL_HOST_USER)
     print(settings.EMAIL_HOST_PASSWORD)
@@ -31,3 +31,4 @@ def send_registration_email(receiver_email, message='Thank you for registering o
         # Send the email
         server.sendmail(settings.EMAIL_HOST_USER, receiver_email, msg.as_string())
     return 'Email Sent Successfully!!!'
+
