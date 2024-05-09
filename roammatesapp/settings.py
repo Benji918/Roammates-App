@@ -236,6 +236,7 @@ BASE_BACKEND_URL = "http://localhost:8000"
 # EMAIL SETTINGS
 EMAIL_HOST_USER = env('SENDER_EMAIL')
 EMAIL_HOST_PASSWORD = env('SENDER_EMAIL_PASSWORD')
+# print(EMAIL_HOST_PASSWORD)
 
 
 PHONENUMBER_DEFAULT_REGION = "NG"
@@ -254,3 +255,10 @@ CELERY_RESULT_BACKEND = 'django-db'
 
 # Celery beat settings
 CELERY_BEAT_SCHEDULER = 'django_celery_beat.schedulers:DatabaseScheduler'
+
+CELERY_BEAT_SCHEDULE = {
+    'delete-expired-ads': {
+        'task': 'roammatesapp.tasks.delete_expired_ads',
+        'schedule': 3600,  # Run every hour
+    },
+}
