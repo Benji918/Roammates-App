@@ -8,7 +8,7 @@ from django.conf import settings
 
 @shared_task
 def send_registration_email(receiver_email, message='Thank you for registering on our site.'):
-    print('task runiningg!!!!!')
+    print('task running!!!!!')
     # Create a MIME object
     msg = MIMEMultipart()
 
