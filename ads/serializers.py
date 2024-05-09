@@ -1,6 +1,5 @@
-from core.models import Ad, AdImage
+from core.models import Ad, AdImage, SavedAd
 from rest_framework import serializers
-
 
 from django.core.exceptions import ValidationError
 
@@ -68,4 +67,8 @@ class AdsSerializer(serializers.ModelSerializer):
         return instance
 
 
-
+class SavedAdSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = SavedAd
+        fields = ['id']
+        read_only_fields = ['id']

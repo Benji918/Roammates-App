@@ -12,8 +12,8 @@ from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated, AllowAny, IsAdminUser
-from core.models import Ad
-from .serializers import AdsSerializer, AdImageSerializer
+from core.models import Ad, SavedAd
+from .serializers import AdsSerializer, AdImageSerializer, SavedAdSerializer
 from .permissions import IsOwnerOfAd
 from .filter import AdsFilter
 
@@ -165,3 +165,36 @@ class PaymentViewSets(mixins.RetrieveModelMixin, mixins.DestroyModelMixin, mixin
             "data": serializer.data
         }
         return Response(data)
+
+
+class SavedAdViewSet(viewsets.GenericViewSet):
+    queryset = SavedAd.objects.all()
+    authentication_classes = [JWTAuthentication]
+    permission_classes = [IsAuthenticated, IsOwnerOfAd]
+
+    @action(detail=True, methods=['POST'])
+    def save_ad(self, request, pk=None):
+        try:
+            ad = Ad.objects.get(pk=pk)  # Retrieve the Ad object based on pk
+        except Ad.DoesNotExist:
+            return Response({"detail": "Ad not found."}, status=status.HTTP_404_NOT_FOUND)
+        user = request.user
+        saved_ad, created = SavedAd.objects.get_or_create(user=user, ad=ad)
+        if created:
+            return Response({"detail": "Ad saved successfully."}, status=status.HTTP_201_CREATED)
+        else:
+            return Response({"detail": "Ad already saved by the user."}, status=status.HTTP_200_OK)
+
+    @action(detail=True, methods=['DELETE'])
+    def unsave_ad(self, request, pk=None):
+        try:
+            ad = Ad.objects.get(pk=pk)  # Retrieve the Ad object based on pk
+        except Ad.DoesNotExist:
+            return Response({"detail": "Ad not found."}, status=status.HTTP_404_NOT_FOUND)
+        user = request.user
+        try:
+            saved_ad = SavedAd.objects.get(user=user, ad=ad)
+            saved_ad.delete()
+            return Response({"detail": "Ad unsaved successfully."}, status=status.HTTP_200_OK)
+        except SavedAd.DoesNotExist:
+            return Response({"detail": "Ad not found in saved ads."}, status=status.HTTP_404_NOT_FOUND)

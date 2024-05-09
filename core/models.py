@@ -152,3 +152,22 @@ class AdImage(models.Model):
         return f"Image for Ad {self.id}"
 
 
+class SavedAd(models.Model):
+    id = models.UUIDField(
+        primary_key=True,
+        default=uuid.uuid4,
+        editable=False,
+        unique=True
+    )
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    ad = models.ForeignKey(Ad, on_delete=models.CASCADE, related_name='saved_ad')
+    saved_at = models.DateTimeField(auto_now_add=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        unique_together = ['user', 'ad']
+
+    def __str__(self):
+        return f'Saved Ad{self.ad.ad_name}'
+
