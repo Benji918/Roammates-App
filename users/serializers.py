@@ -4,7 +4,7 @@ from django.core.exceptions import ValidationError
 
 class UserCreateSerializer(BaseUserSerializer):
     class Meta(BaseUserSerializer.Meta):
-        fields = ['id', 'email', 'username', 'password']
+        fields = ['id', 'email', 'gender', 'username', 'password']
 
     # def validate(self, value):
     #     if len(value) < 5:
