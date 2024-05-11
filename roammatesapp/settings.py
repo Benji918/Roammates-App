@@ -48,9 +48,11 @@ INSTALLED_APPS = [
     'rest_framework_simplejwt',
     'djoser',
     'drf_spectacular',
+    'drf_yasg',
     "corsheaders",
     'django_celery_beat',
     'django_celery_results',
+    'multiselectfield',
 
     # local apps
     'core',
