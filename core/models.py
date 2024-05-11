@@ -1,3 +1,4 @@
+from django.core.validators import MaxLengthValidator
 from django.utils import timezone
 from django.db import models
 from .manager import CustomUserManager
@@ -8,7 +9,8 @@ from django.conf import settings
 from phonenumber_field.modelfields import PhoneNumberField
 from .validators import validate_rooms, validate_ad_name
 from django.utils.translation import gettext_lazy as _
-
+from multiselectfield import MultiSelectField
+from django.contrib.postgres.fields import ArrayField
 
 def ad_image_file(instance, filename):
     """Generate filename for new object image"""
@@ -30,7 +32,7 @@ class CustomUser(AbstractUser):
     )
     username = models.CharField(unique=True, max_length=50, blank=False, null=False)
     email = models.EmailField(unique=True, blank=False, null=False)
-    gender = models.CharField(max_length=10, choices=GENDER_CHOICES, null=True, blank=True)
+    gender = models.CharField(max_length=10, choices=GENDER_CHOICES, null=False, blank=False)
     is_admin = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
     is_email_verified = models.BooleanField(default=False)
@@ -63,11 +65,14 @@ class Ad(models.Model):
         (PAYMENT_STATUS_COMPLETE, 'Complete'),
         (PAYMENT_STATUS_FAILED, 'Failed'),
     ]
-    ROOM_AMENITIES_CHOICES = [
+
+    ROOM_AMENITIES_CHOICES = (
         ('water', 'Water'),
         ('furniture', 'Furniture'),
         ('light', 'Light'),
-    ]
+    )
+
+
     AD_TYPE_CHOICES = [
         ('room to rent', 'Room to Rent'),
         ('room wanted', 'Room Wanted'),
@@ -85,11 +90,12 @@ class Ad(models.Model):
     size_of_property = models.CharField(max_length=255, blank=False)
     address_of_property = models.URLField(max_length=255, unique=True, blank=False)
     area_of_property = models.CharField(max_length=255, blank=False)
-    room_amenities = models.CharField(max_length=255, choices=ROOM_AMENITIES_CHOICES, blank=False)
+    room_amenities = MultiSelectField(choices=ROOM_AMENITIES_CHOICES, validators=[MaxLengthValidator(3)])
+    # room_amenities = ArrayField(MultiSelectField(choices=ROOM_AMENITIES_CHOICES, validators=[MaxLengthValidator(3)]))
     cost_of_room = models.IntegerField(blank=False)
     length_of_availability = models.DateField(blank=True)
     phone_number = PhoneNumberField(null=False, blank=False, unique=True)
-    image = models.ManyToManyField('AdImage', related_name='ads')
+    image = models.ManyToManyField('AdImage', related_name='ads', blank=True, null=True)
     placed_at = models.DateTimeField(auto_now_add=True)
     pending_status = models.CharField(
         max_length=50, choices=PAYMENT_STATUS_CHOICES, default=PAYMENT_STATUS_PENDING)
@@ -135,6 +141,23 @@ class Ad(models.Model):
         return None
 
 
+class RoomAmenity(models.Model):
+    id = models.UUIDField(
+        primary_key=True,
+        default=uuid.uuid4,
+        editable=False,
+        unique=True
+    )
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE
+    )
+    name = models.CharField(max_length=255, unique=True)
+
+    def __str__(self):
+        return self.name
+
+
 class AdImage(models.Model):
     id = models.UUIDField(
         primary_key=True,
@@ -144,7 +167,7 @@ class AdImage(models.Model):
     )
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     ad = models.ForeignKey(Ad, on_delete=models.CASCADE, related_name='images')
-    image = models.ImageField(null=False, blank=False, upload_to=ad_image_file)
+    image = models.ImageField(null=True, blank=True, upload_to=ad_image_file)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -170,4 +193,3 @@ class SavedAd(models.Model):
 
     def __str__(self):
         return f'Saved Ad{self.ad.ad_name}'
-

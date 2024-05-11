@@ -16,9 +16,11 @@ from core.models import Ad, SavedAd
 from .serializers import AdsSerializer, AdImageSerializer, SavedAdSerializer
 from .permissions import IsOwnerOfAd
 from .filter import AdsFilter
-
+from drf_yasg import openapi
+from drf_yasg.utils import swagger_auto_schema
 
 # Create your views here
+
 class AdViewSets(viewsets.ModelViewSet):
     queryset = Ad.objects.all()
     serializer_class = AdsSerializer

@@ -1,5 +1,5 @@
-from core.models import Ad, AdImage, SavedAd
-from rest_framework import serializers
+from core.models import Ad, AdImage, SavedAd, RoomAmenity
+from rest_framework import serializers, fields
 
 from django.core.exceptions import ValidationError
 
@@ -30,13 +30,27 @@ class AdImageSerializer(serializers.ModelSerializer):
 
 class AdsSerializer(serializers.ModelSerializer):
     images = AdImageSerializer(many=True, required=False)
+    room_amenities = fields.MultipleChoiceField(choices=Ad.ROOM_AMENITIES_CHOICES)
 
     class Meta:
         model = Ad
         fields = ['id', 'ad_name', 'no_rooms_for_rent', 'size_of_property', 'address_of_property',
-                  'area_of_property', 'room_amenities', 'cost_of_room', 'length_of_availability',
-                  'phone_number', 'ad_type', 'ad_cost', 'images']
+                  'area_of_property', 'cost_of_room', 'length_of_availability',
+                  'phone_number', 'ad_type', 'ad_cost', 'room_amenities', 'images']
         read_only_fields = ['id', 'created_at', 'updated_at']
+
+    # def validate(self, data):
+    #     """Convert room_amenities between list and string formats"""
+    #     room_amenities = data.get('room_amenities')
+    #
+    #     # If room_amenities is a list, convert it to a comma-separated string
+    #     if isinstance(room_amenities, list):
+    #         data['room_amenities'] = ','.join(room_amenities)
+    #     # If room_amenities is a string, split it into a list
+    #     elif isinstance(room_amenities, str):
+    #         data['room_amenities'] = room_amenities.split(',')
+    #
+    #     return data
 
     def _get_or_create_images(self, images, ad):
         """Helper function for getting or creating images as needed"""
