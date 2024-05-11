@@ -30,7 +30,11 @@ class AdImageSerializer(serializers.ModelSerializer):
 
 class AdsSerializer(serializers.ModelSerializer):
     images = AdImageSerializer(many=True, required=False)
-    room_amenities = fields.MultipleChoiceField(choices=Ad.ROOM_AMENITIES_CHOICES)
+    room_amenities = serializers.ListField(
+        child=serializers.CharField(max_length=100),  # Adjust the max_length as needed
+        required=False,
+    )
+
 
     class Meta:
         model = Ad
@@ -39,18 +43,8 @@ class AdsSerializer(serializers.ModelSerializer):
                   'phone_number', 'ad_type', 'ad_cost', 'room_amenities', 'images']
         read_only_fields = ['id', 'created_at', 'updated_at']
 
-    # def validate(self, data):
-    #     """Convert room_amenities between list and string formats"""
-    #     room_amenities = data.get('room_amenities')
-    #
-    #     # If room_amenities is a list, convert it to a comma-separated string
-    #     if isinstance(room_amenities, list):
-    #         data['room_amenities'] = ','.join(room_amenities)
-    #     # If room_amenities is a string, split it into a list
-    #     elif isinstance(room_amenities, str):
-    #         data['room_amenities'] = room_amenities.split(',')
-    #
-    #     return data
+
+
 
     def _get_or_create_images(self, images, ad):
         """Helper function for getting or creating images as needed"""
