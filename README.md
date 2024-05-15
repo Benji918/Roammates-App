@@ -10,3 +10,11 @@ Architectural diagram
 
 ER diagram 
 ![](https://github.com/Benji918/Roammates-App/blob/main/Roommates%20ER%20diagram.png)
+
+# Technologies Used
+- Django
+- Django Rest Framework
+- Celery
+- Docker
+- PostgreSQL
+- Flutterwave 
