@@ -5,6 +5,8 @@
 - Allow students to post apartment for rent ads
 - Allows students to find available rooms and apartments for rent
 
-  
+Architectural diagram
 ![](https://github.com/Benji918/Roammates-App/blob/main/ROAMMATES%20APP.png)
+
+ER diagram 
 ![](https://github.com/Benji918/Roammates-App/blob/main/Roommates%20ER%20diagram.png)
