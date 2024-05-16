@@ -17,4 +17,4 @@ ER diagram
 - Celery
 - Docker
 - PostgreSQL
-- Flutterwave 
+- Flutterwave third party payment service 
