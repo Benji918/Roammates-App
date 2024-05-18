@@ -15,6 +15,7 @@ ER diagram
 - Django
 - Django Rest Framework
 - Celery
+- Celery beat scheduler
 - Docker
 - PostgreSQL
 - Flutterwave third party payment service 
