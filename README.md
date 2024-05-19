@@ -18,4 +18,5 @@ ER diagram
 - Celery beat scheduler
 - Docker
 - PostgreSQL
-- Flutterwave third party payment service 
+- Flutterwave third party payment service
+- AWS
