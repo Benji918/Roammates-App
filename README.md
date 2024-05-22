@@ -20,4 +20,4 @@ ER diagram
 - PostgreSQL
 - Flutterwave third party payment service
 - AWS
-- AWS S3 🪣 
+- AWS S3 bucket 
