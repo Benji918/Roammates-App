@@ -1,5 +1,10 @@
 # Roammates-App
 ## An innovative MVP solution for users to find, rent rooms and apartments and find rooms and roommates 
+
+## Problem
+### Students not being able to rent rooms and apartments, find roommates woth ease.
+
+## Solution 
 ### The web application contains the following features 
 - Allow students to post room for rent ads
 - Allow students to post apartment for rent ads
