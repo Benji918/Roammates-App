@@ -6,8 +6,8 @@
 
 ## Solution 
 ### The web application contains the following features 
-- Allow students to post room for rent ads
-- Allow students to post apartment for rent ads
+- Allow students to post room for rent 
+- Allow students to post apartment for rent 
 - Allows students to find available rooms and apartments for rent
 
 Architectural diagram(incomplete)
