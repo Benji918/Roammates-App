@@ -9,11 +9,10 @@ LABEL maintainer="benjamin"
 # WORKING DIRECTORY
 WORKDIR /app
 
-# Install app dependencies
-COPY requirements.txt .
-RUN pip install -r requirements.txt
-
 # Set the working directory
 COPY . .
+
+# Install app dependencies
+RUN pip install -r requirements.txt
 
 EXPOSE 8000
