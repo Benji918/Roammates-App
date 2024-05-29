@@ -22,6 +22,7 @@ ER diagram(incomplete)
 - Celery
 - Celery beat scheduler
 - Docker
+- Docker Swarm
 - PostgreSQL
 - Flutterwave third party payment service
 - AWS
