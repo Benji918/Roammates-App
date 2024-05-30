@@ -1,4 +1,4 @@
-# Roammates-App
+# Roammates App
 ## An innovative MVP solution for users to find, rent rooms and apartments and find rooms and roommates 
 
 ## Problem
