@@ -15,7 +15,7 @@ services:
       - postgres-db
 
   postgres-db:
-    image: postgres:14
+    image: postgres:latest
     volumes:
       - postgres_db_data:/var/lib/postgresql/data
 
@@ -29,7 +29,7 @@ services:
     volumes:
       - ./:/app
     command: >
-      sh -c "celery -A roammatesapp worker -l info"
+      sh -c "celery -A roammatesapp.celery worker -l info"
     depends_on:
       - redis
 
