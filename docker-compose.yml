@@ -1,4 +1,4 @@
-version: '3.8'
+version: '3.9'
 
 services:
   web:
@@ -9,15 +9,20 @@ services:
     volumes:
       - ./:/app
     command: >
-      sh -c "python manage.py test &&
-             python manage.py migrate &&
-             python manage.py runserver 0.0.0.0:8000"
+      sh -c " python manage.py migrate &&
+              python manage.py runserver 0.0.0.0:8000"
+             
 
     depends_on:
       - postgres-db
 
   postgres-db:
     image: postgres:latest
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: examplepassword
+      POSTGRES_USER: exampleuser
+      POSTGRES_DB: exampledb
     volumes:
       - postgres_db_data:/var/lib/postgresql/data
 
