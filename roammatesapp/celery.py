@@ -9,11 +9,16 @@ os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'roammatesapp.settings')
 app = Celery('roammatesapp')
 app.conf.enable_utc = False
 
-app.config_from_object(settings, namespace='CELERY')
+# Configure Celery using settings from Django settings.py.
+app.config_from_object('django.conf:settings', namespace='CELERY')
 
-app.autodiscover_tasks()
+# Celery beat settings
+app.conf.beat_schedule = {}
+
+# Load tasks from all registered Django app configs.
+app.autodiscover_tasks(lambda: settings.INSTALLED_APPS)
 
 
-@app.task(bind=True)
+@app.task(bind=True, ignore_result=True)
 def debug_task(self):
-    print(f"Request: {self.request!r}")
+    print(f'Request: {self.request!r}')
