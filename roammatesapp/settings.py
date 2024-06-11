@@ -52,7 +52,6 @@ INSTALLED_APPS = [
     'django_celery_beat',
     'django_celery_results',
     'multiselectfield',
-    'rabbitmq',
 
     # local apps
     'core',
@@ -248,14 +247,14 @@ FLW_SEC_KEY = env('FLW_SEC_KEY')
 FLW_PUB_KEY = env('FLW_PUB_KEY')
 
 # Celery settings
-CELERY_BROKER_URL = 'amqp://guest:guest@localhost:5672/'
-CELERY_ACCEPT_CONTENT = ['application/json']
-CELERY_RESULT_SERIALIZER = 'json'
-CELERY_TASK_SERIALIZER = 'json'
-CELERY_TIMEZONE = 'Africa/lagos'
-CELERY_RESULT_BACKEND = 'rabbitmq://localhost:5672/myvhost'
+CELERY_BROKER_URL = 'redis://127.0.0.1:6379/0'
+CELERY_ACCEPT_CONTENT=['application/json']
+CELERY_RESULT_SERIALIZER='json'
+CELERY_TASK_SERIALIZER='json'
+CELERY_TIMEZONE='Africa/Lagos'
+CELERY_RESULT_BACKEND = 'django-db'
 CELERY_TASK_TRACK_STARTED = True
-CELERY_TASK_DEFAULT_QUEUE = 'celery.importexport.default'
+# CELERY_TASK_DEFAULT_QUEUE = 'celery.importexport.default'
 CELERY_BROKER_CONNECTION_RETRY_ON_STARTUP = True
 
 # Celery beat settings
