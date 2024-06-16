@@ -27,3 +27,4 @@ ER diagram(incomplete)
 - Flutterwave third party payment service
 - AWS
 - AWS S3 bucket 
+- Kubernetes Clusters
