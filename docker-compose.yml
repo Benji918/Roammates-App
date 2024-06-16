@@ -37,7 +37,7 @@ services:
     volumes:
       - ./:/app
     command: >
-      sh -c "celery -A roammatesapp.celery worker -l info"
+      sh -c "celery -A roammatesapp.celery worker -l info" 
     depends_on:
       - redis
 
