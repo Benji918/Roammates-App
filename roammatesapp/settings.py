@@ -247,7 +247,7 @@ FLW_SEC_KEY = env('FLW_SEC_KEY')
 FLW_PUB_KEY = env('FLW_PUB_KEY')
 
 # Celery settings
-CELERY_BROKER_URL = 'redis://127.0.0.1:6379/0'
+CELERY_BROKER_URL = 'redis://redis:6379/0'
 CELERY_ACCEPT_CONTENT=['application/json']
 CELERY_RESULT_SERIALIZER='json'
 CELERY_TASK_SERIALIZER='json'

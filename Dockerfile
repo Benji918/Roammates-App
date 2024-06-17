@@ -10,6 +10,8 @@ WORKDIR /app
 # Install dependencies
 RUN apt-get update && apt-get install -y \
     python3-venv \
+    linux-headers-amd64 \
+    build-essential \
     && rm -rf /var/lib/apt/lists/*
 
 # Create a virtual environment

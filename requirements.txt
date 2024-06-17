@@ -36,6 +36,7 @@ djoser==2.2.2
 drf-spectacular==0.27.1
 drf-yasg==1.21.7
 easy-thumbnails==2.8.5
+evdev==1.7.1
 flower==2.0.1
 google-auth==2.28.2
 google-auth-httplib2==0.2.0
@@ -43,6 +44,7 @@ google-auth-oauthlib==1.2.0
 httplib2==0.22.0
 humanize==4.9.0
 idna==3.6
+importlib-metadata==4.13.0
 inflection==0.5.1
 jsonschema==4.21.1
 jsonschema-specifications==2023.12.1
@@ -65,8 +67,10 @@ python-crontab==3.0.0
 python-dateutil==2.9.0.post0
 python-decouple==3.8
 python-dotenv==1.0.1
+python-xlib==0.33
+python3-openid==3.2.0
+pytz==2024.1
 PyYAML==6.0.1
-rabbitmq-server==0.0.1
 redis==5.0.3
 referencing==0.34.0
 requests==2.31.0
@@ -89,3 +93,4 @@ urllib3==2.2.1
 vine==5.1.0
 watchdog==3.0.0
 wcwidth==0.2.13
+zipp==3.19.2
