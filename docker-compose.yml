@@ -12,9 +12,9 @@ services:
       sh -c " python manage.py migrate &&
               python manage.py runserver 0.0.0.0:8000"
              
-
     depends_on:
       - postgres-db
+      - redis
 
   postgres-db:
     image: postgres:latest
@@ -28,12 +28,11 @@ services:
 
 
   redis:
-    image: redis:latest
-    ports:
-      - 6379:6379
+    image: redis:alpine
+    
 
   celery:
-    image: celery:latest
+    build: .
     volumes:
       - ./:/app
     command: >
