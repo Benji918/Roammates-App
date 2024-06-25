@@ -27,17 +27,17 @@ from roammatesapp import settings
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('api/schema/', SpectacularAPIView.as_view(), name='schema'),
-    path('api/schema/swagger/', SpectacularSwaggerView.as_view(), name='swagger-ui'),
-    path('api/schema/redoc/', SpectacularRedocView.as_view(url_name='schema'), name='redoc'),
+    path('api/v1/schema/', SpectacularAPIView.as_view(), name='schema'),
+    path('api/v1/schema/swagger/', SpectacularSwaggerView.as_view(), name='swagger-ui'),
+    path('api/v1/schema/redoc/', SpectacularRedocView.as_view(url_name='schema'), name='redoc'),
 
 
     # AUTHENTICATION API ENDPOINTS
-    path('auth/', include('djoser.urls')),
-    path('jwt/', include('djoser.urls.jwt')),
+    path('auth/v1/', include('djoser.urls')),
+    path('jwt/v1/', include('djoser.urls.jwt')),
 
     # APP ENDPOINTS
-    path('ads/', include('ads.urls')),
+    path('ads/v1/', include('ads.urls')),
 
 
 ]
