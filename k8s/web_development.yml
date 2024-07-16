@@ -20,6 +20,17 @@ spec:
           image: benji918/roammatesapp:latest
           ports:
             - containerPort: 8000
+          env:
+            - name: DATABASE_HOST
+              value: "postgres-db"
+            - name: DATABASE_PORT
+              value: "5432"
+            - name: DATABASE_USER
+              value: "exampleuser"
+            - name: DATABASE_PASSWORD
+              value: "examplepassword"
+            - name: DATABASE_NAME
+              value: "exampledb"
          
 ---
 apiVersion: v1
